@@ -2,10 +2,21 @@
 <ul>
   <% @tasks.each do |task| %>
   <li> 
-    <%= check_box_tag "", "" %>
+    <%= check_box_tag "", "", task.done, {'data-id' =>task.id} %>
     <%= task.title %>
+    <%= link_to "編集", edit_task_path(task.id)%>
+    <%= link_to "削除", task_path(task.id), method: :delete, data: {confirm: "削除してもいいですか？"}%>
+
     <% end %>
   </li>
 </ul>
 
 <%= link_to "新規作成" , new_task_path %>
+
+<script>
+$(function(){
+  $("input[type = checkbox]").click(function(){
+    $.post('/tasks/' + $(this).data('id') + '/toggle');
+  });
+});
+</script>
